@@ -1,139 +1,1064 @@
-swagger: "2.0"
+swagger: '2.0'
+
 info:
-  version: 1.0.0
-  title: "TV API Published"
-  description: A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification
-  termsOfService: http://swagger.io/terms/
-  contact:
-    name: Swagger API Team
-    email: foo@example.com
-    url: http://madskristensen.net
-  license:
-    name: MIT
-    url: http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT
-host: petstore.swagger.io
-basePath: /api
+  version: '1.0'
+  title: Press Association TV API
+  description: Welcome to the API Reference Docs page for the Press Association TV API.
+host: tv.api.press.net
+basePath: /v1
+securityDefinitions:
+  apikey:
+    type: apiKey
+    name: apikey
+    in: header
 schemes:
+  - https
   - http
-consumes:
-  - application/json
 produces:
   - application/json
+  
 paths:
-  /pets:
+  /platform:
     get:
-      description: |
-        Returns all pets from the system that the user has access to
-        Nam sed condimentum est. Maecenas tempor sagittis sapien, nec rhoncus sem sagittis sit amet. Aenean at gravida augue, ac iaculis sem. Curabitur odio lorem, ornare eget elementum nec, cursus id lectus. Duis mi turpis, pulvinar ac eros ac, tincidunt varius justo. In hac habitasse platea dictumst. Integer at adipiscing ante, a sagittis ligula. Aenean pharetra tempor ante molestie imperdiet. Vivamus id aliquam diam. Cras quis velit non tortor eleifend sagittis. Praesent at enim pharetra urna volutpat venenatis eget eget mauris. In eleifend fermentum facilisis. Praesent enim enim, gravida ac sodales sed, placerat id erat. Suspendisse lacus dolor, consectetur non augue vel, vehicula interdum libero. Morbi euismod sagittis libero sed lacinia.
-        Sed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condimentum ligula luctus nec. Phasellus semper velit eget aliquet faucibus. In a mattis elit. Phasellus vel urna viverra, condimentum lorem id, rhoncus nibh. Ut pellentesque posuere elementum. Sed a varius odio. Morbi rhoncus ligula libero, vel eleifend nunc tristique vitae. Fusce et sem dui. Aenean nec scelerisque tortor. Fusce malesuada accumsan magna vel tempus. Quisque mollis felis eu dolor tristique, sit amet auctor felis gravida. Sed libero lorem, molestie sed nisl in, accumsan tempor nisi. Fusce sollicitudin massa ut lacinia mattis. Sed vel eleifend lorem. Pellentesque vitae felis pretium, pulvinar elit eu, euismod sapien.
-      operationId: findPets
+      description: Return a list of available platforms.
+      summary: Platform Collection
+      tags:
+        - Platform
+      operationId: listPlatforms
+      security:
+        - apikey: []
+      produces:
+        - application/json
       parameters:
-        - name: tags
-          in: query
-          description: tags to filter by
-          required: false
-          type: array
-          collectionFormat: csv
-          items:
-            type: string
-        - name: limit
-          in: query
-          description: maximum number of results to return
-          required: false
-          type: integer
-          format: int32
+        - $ref: '#/parameters/Accept'
+        - $ref: '#/parameters/Query'
+        - $ref: '#/parameters/Limit'
+        - $ref: '#/parameters/Offset'
       responses:
         200:
-          description: pet response
+          description: ''
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/Pet'
-        default:
-          description: unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-    post:
-      description: Creates a new pet in the store.  Duplicates are allowed
-      operationId: addPet
-      parameters:
-        - name: pet
-          in: body
-          description: Pet to add to the store
-          required: true
-          schema:
-            $ref: '#/definitions/NewPet'
-      responses:
-        200:
-          description: pet response
-          schema:
-            $ref: '#/definitions/Pet'
-        default:
-          description: unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-  /pets/{id}:
+            type: object
+          examples:
+            application/json: |-
+              {
+                  "limit": 10,
+                  "offset": 0,
+                  "hasNext": true,
+                  "hasPrevious": false,
+                  "items": [{
+                      "id": "2254c5d8-1f7a-3741-96a8-12349f7a612e",
+                      "title": "BT TV"
+                  }, {
+                      "id": "d46f4b85-b5e8-3639-a767-faa082df415f",
+                      "title": "Freesat"
+                  }, {
+                      "id": "992e72d4-86a4-3644-bd0f-fb742a0e9f5d",
+                      "title": "Freeview"
+                  }, {
+                      "id": "4ac6f1a6-83d4-3116-865b-3ab212b00eb5",
+                      "title": "Irish Radio"
+                  }, {
+                      "id": "cd5a54da-d1ec-3e36-8593-93b5e92ebc01",
+                      "title": "Saorsat"
+                  }, {
+                      "id": "8173de5c-7005-3f92-9de9-432e656731fd",
+                      "title": "Saorview"
+                  }, {
+                      "id": "87eb02d1-cdef-344a-8823-106d2dc8097b",
+                      "title": "Sky HD"
+                  }, {
+                      "id": "236f1da3-6901-3539-93ed-a56c4cc6a7f4",
+                      "title": "Sky SD"
+                  }, {
+                      "id": "04124b1d-3836-3bfb-89e7-ef696de8c155",
+                      "title": "TalkTalk YouView"
+                  }, {
+                      "id": "5d3eb87e-410a-3ef1-b465-64a4d196d126",
+                      "title": "Thema"
+                  }]
+              }
+            
+  /platform/{platformId}:
     get:
-      description: Returns a user based on a single ID, if the user does not have access to the pet
-      operationId: find pet by id
+      description: Return the content of the selected platform.
+      summary: Platform Detail
+      tags:
+        - Platform
+      operationId: getPlatform
+      security:
+        - apikey: []
+      produces:
+        - application/json
       parameters:
-        - name: id
-          in: path
-          description: ID of pet to fetch
-          required: true
-          type: integer
-          format: int64
+      - $ref: '#/parameters/PlatformId'
+        in: path
+      - $ref: '#/parameters/Accept'
       responses:
         200:
-          description: pet response
+          description: ''
           schema:
-            $ref: '#/definitions/Pet'
-        default:
-          description: unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-    delete:
-      description: deletes a single pet based on the ID supplied
-      operationId: deletePet
+            type: object
+          examples:
+            application/json: |-
+              {
+                  "id": "87eb02d1-cdef-344a-8823-106d2dc8097b",
+                  "title": "Sky HD"
+              }
+
+  /platform/{platformId}/region:
+    get:
+      description: Return a list of regions for a platform.
+      summary: Platform Region Collection
+      tags:
+        - Platform
+      operationId: listPlatformRegions
+      security:
+        - apikey: []
+      produces:
+        - application/json
       parameters:
-        - name: id
-          in: path
-          description: ID of pet to delete
-          required: true
-          type: integer
-          format: int64
+        - $ref: '#/parameters/PlatformId'
+          in: path      
+        - $ref: '#/parameters/Query'
+        - $ref: '#/parameters/Limit'
+        - $ref: '#/parameters/Offset'
+        - $ref: '#/parameters/Accept'
       responses:
-        204:
-          description: pet deleted
-        default:
-          description: unexpected error
+        200:
+          description: ''
           schema:
-            $ref: '#/definitions/Error'
-definitions:
-  Pet:
-    allOf:
-      - $ref: '#/definitions/NewPet'
-      - required:
-        - id
-        properties:
-          id:
-            type: integer
-            format: int64
-  NewPet:
-    required:
-      - name
-    properties:
-      name:
-        type: string
-      tag:
-        type: string
-  Error:
-    required:
-      - code
-      - message
-    properties:
-      code:
-        type: integer
-        format: int32
-      message:
-        type: string
+            type: object
+          examples:
+            application/json: |-
+              {
+                  "limit": 5,
+                  "offset": 0,
+                  "hasNext": true,
+                  "hasPrevious": false,
+                  "items": [{
+                      "id": "8e0c3099-fe15-352b-9f78-c4f72276826a",
+                      "title": "Anglia"
+                  }, {
+                      "id": "da7fc2a3-acf1-31c5-947a-af1f61c1890c",
+                      "title": "Cambridgeshire"
+                  }, {
+                      "id": "9bb1d3c0-67c0-3d38-b554-bedefe958497",
+                      "title": "Channel Islands"
+                  }, {
+                      "id": "ead8fbf9-51fe-390c-bf8a-b3c0c006d572",
+                      "title": "Cumbria"
+                  }, {
+                      "id": "2e7d06bc-5bcc-3500-9fa0-bf3f65f214c2",
+                      "title": "East Midlands"
+                  }]
+              }
+  
+  /channel:
+    get:
+      description: Return a collection of channels.
+      summary: Channel Collection
+      tags:
+        - Channel
+      operationId: listChannels
+      security:
+        - apikey: []
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/PlatformId'
+        - $ref: '#/parameters/RegionId'
+        - $ref: '#/parameters/Query'
+        - $ref: '#/parameters/Limit'
+        - $ref: '#/parameters/Offset'
+        - $ref: '#/parameters/Accept'
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+          examples:
+            application/json: |-
+              {
+                "limit": 2,
+                "offset": 0,
+                "hasNext": true,
+                "hasPrevious": false,
+                "items": [{
+                    "id": "53026209-e1b2-3af2-9244-3586feb9b4f7",
+                    "epg": "101",
+                    "title": "BBC One London",
+                    "url": "http://www.bbc.co.uk/tv/bbcone/live",
+                    "type": "tv",
+                    "hd": false,
+                    "regional": true,
+                    "media": [{
+                        "kind": "picture:logo",
+                        "rendition": {
+                            "default": {
+                                "href": "http://tv.static.press.net/logo/p131847.png"
+                            },
+                            "transparent-light": {
+                                "href": "http://tv.static.press.net/logo/p220121121713.png"
+                            },
+                            "transparent-dark": {
+                                "href": "http://tv.static.press.net/logo/p120121121713.png"
+                            }
+                        }
+                    }]
+                }, {
+                    "id": "ea93fc2f-662a-3b6a-b624-a38871945161",
+                    "epg": "102",
+                    "title": "BBC Two HD",
+                    "type": "tv",
+                    "hd": true,
+                    "regional": false,
+                    "media": [{
+                        "kind": "picture:logo",
+                        "rendition": {
+                            "default": {
+                                "href": "http://tv.static.press.net/logo/p142703.png"
+                            },
+                            "transparent-light": {
+                                "href": "http://tv.static.press.net/logo/p2201303261782.png"
+                            },
+                            "transparent-dark": {
+                                "href": "http://tv.static.press.net/logo/p1201303261782.png"
+                            }
+                        }
+                    }]
+                }]
+              }
+
+  /channel/{channelId}:
+    get:
+      description: Return the content of the selected channel.
+      summary: Channel Detail
+      tags:
+        - Channel
+      operationId: getChannel
+      security:
+        - apikey: []
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/ChannelId'
+          in: path
+        - $ref: '#/parameters/Accept'
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+          examples:
+            application/json: |-
+              {
+                  "id": "53026209-e1b2-3af2-9244-3586feb9b4f7",
+                  "title": "BBC One London",
+                  "url": "http://www.bbc.co.uk/tv/bbcone/live",
+                  "type": "tv",
+                  "hd": false,
+                  "regional": true,
+                  "media": [{
+                      "kind": "picture:logo",
+                      "rendition": {
+                          "default": {
+                              "href": "http://tv.static.press.net/logo/p131847.png"
+                          },
+                          "transparent-light": {
+                              "href": "http://tv.static.press.net/logo/p220121121713.png"
+                          },
+                          "transparent-dark": {
+                              "href": "http://tv.static.press.net/logo/p120121121713.png"
+                          }
+                      }
+                  }]
+              }
+
+  /schedule:
+    get:
+      description: Return a collection of schedule items. It is required that a request must contain either a channelId or a combination or platformId and RegionId.
+      summary: Schedule Collection
+      tags:
+        - Schedule
+      operationId: listSchedule
+      security:
+        - apikey: []
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/ChannelId'
+        - $ref: '#/parameters/PlatformId'
+        - $ref: '#/parameters/RegionId'
+        - $ref: '#/parameters/Date'
+          name: start
+          description: "Limit the schedule to ones scheduled from the selected date provided. For example 2014-04-14.\n\nThe 'end' parameter is typically used in combination with the 'end' param to form a date range.\n\n\n Formats Supported:\n\n\n - yyyy/MM/dd \n\n\n - yyyy/MM/ddThh:mm \n\n\n - now.plus.{nHours?} \n\n\n - now.minus.{nHours?} \n\n\n - tomorrow"
+        - $ref: '#/parameters/Date'
+          name: end
+          description: "Limit the schedule to ones scheduled to the selected date provided. For example: 2014-04-17.\n\nThe 'end' parameter is typically used in combination with the 'start' param to form a date range.\n\n\n Formats Supported:\n\n\n - yyyy/MM/dd \n\n\n - yyyy/MM/ddThh:mm \n\n\n - now.plus.{nHours?} \n\n\n - now.minus.{nHours?} \n\n\n - tomorrow"
+        - $ref: '#/parameters/AssetId'
+        - $ref: '#/parameters/ContributorId'
+        - $ref: '#/parameters/Limit'
+        - $ref: '#/parameters/Offset'
+        - $ref: '#/parameters/Accept'
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+          examples:
+            application/json: |-
+              {
+                  "limit": 2,
+                  "offset": 0,
+                  "hasNext": true,
+                  "hasPrevious": false,
+                  "items": [{
+                      "id": "0fd54fe4-a930-387c-a0bd-760f3fd4bbd0",
+                      "title": "Weather for the Week Ahead",
+                      "type": "tv-show",
+                      "dateTime": "2017-05-05T00:00:00+0000",
+                      "duration": 5,
+                      "asset": {
+                          "id": "4e3c3015-3ba5-38b3-aaa5-d44ff10f9b9d",
+                          "title": "Weather for the Week Ahead",
+                          "type": "episode",
+                          "relatedAsset": {
+                              "series": {
+                                  "id": "732d125f-9964-337e-9f8c-eb541c27859b",
+                                  "title": "Weather for the Week Ahead"
+                              }
+                          },
+                          "tag": [{
+                              "id": "genre:weather",
+                              "name": "Weather"
+                          }],
+                          "media": [{
+                              "kind": "picture:series",
+                              "copyright": "PA Archive/Press Association Images",
+                              "expiryDate": "2017-05-25",
+                              "rendition": {
+                                  "default": {
+                                      "href": "http://tv.static.press.net/asset/webANXnewsweather7.jpg"
+                                  }
+                              }
+                          }]
+                      },
+                      "channel": {
+                          "id": "53026209-e1b2-3af2-9244-3586feb9b4f7",
+                          "title": "BBC One London",
+                          "hd": false,
+                          "regional": false
+                      },
+                      "stereo": false,
+                      "subtitles": true,
+                      "surround": false,
+                      "widescreen": true,
+                      "audioDescriptive": false,
+                      "interactive": false,
+                      "hd": true,
+                      "3d": false,
+                      "repeat": false,
+                      "premiere": false,
+                      "newSeries": false,
+                      "newEpisode": false,
+                      "lastInSeries": false,
+                      "live": false,
+                      "signLanguage": false,
+                      "inVision": true
+                  }, {
+                      "id": "76f5a064-bf72-3e87-95fe-f9b45a76b926",
+                      "title": "BBC News",
+                      "type": "tv-show",
+                      "dateTime": "2017-05-05T00:05:00+0000",
+                      "duration": 295,
+                      "asset": {
+                          "id": "44044d73-7f85-3d89-9a70-b1044d8f4a01",
+                          "title": "04/05/2017",
+                          "type": "episode",
+                          "relatedAsset": {
+                              "series": {
+                                  "id": "db81caac-7aa0-3f98-80be-6133f9b19050",
+                                  "title": "BBC News"
+                              }
+                          },
+                          "tag": [{
+                              "id": "genre:news",
+                              "name": "News"
+                          }],
+                          "media": [{
+                              "kind": "picture:series",
+                              "copyright": "BBC",
+                              "expiryDate": "2017-05-25",
+                              "rendition": {
+                                  "default": {
+                                      "href": "http://tv.static.press.net/asset/webANXbbcnewsgenlogo2.jpg"
+                                  }
+                              }
+                          }]
+                      },
+                      "channel": {
+                          "id": "53026209-e1b2-3af2-9244-3586feb9b4f7",
+                          "title": "BBC One London",
+                          "hd": false,
+                          "regional": false
+                      },
+                      "stereo": false,
+                      "subtitles": true,
+                      "surround": false,
+                      "widescreen": true,
+                      "audioDescriptive": false,
+                      "interactive": false,
+                      "hd": true,
+                      "3d": false,
+                      "repeat": false,
+                      "premiere": false,
+                      "newSeries": false,
+                      "newEpisode": false,
+                      "lastInSeries": false,
+                      "live": false,
+                      "signLanguage": false,
+                      "inVision": true
+                  }]
+              }
+              
+  /asset:
+    get:
+      description: Return a collection of Assets.
+      summary: Asset Collection
+      tags:
+        - Asset
+      operationId: listAssets
+      security:
+        - apikey: []
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/Type'
+        - $ref: '#/parameters/Tag'
+        - $ref: '#/parameters/ContributorId'
+        - $ref: '#/parameters/Query'
+        - $ref: '#/parameters/Limit'
+        - $ref: '#/parameters/Offset'
+        - $ref: '#/parameters/Accept'
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+          examples:
+            application/json: |-
+              {
+                "limit": 2,
+                "offset": 0,
+                "hasNext": true,
+                "hasPrevious": false,
+                "items": [{
+                    "id": "0e8f462b-9e21-3a3f-b182-c713d421a98f",
+                    "title": "Fast Food",
+                    "type": "movie",
+                    "tag": [{
+                        "id": "genre:comedy",
+                        "name": "Comedy"
+                    }],
+                    "summary": {
+                        "short": "Comedy, starring Clark Brandon.",
+                        "medium": "A party animal hits upon the idea of opening a burger joint in his cousin's garage. Comedy, starring Clark Brandon and Randal Patrick.",
+                        "long": "A party animal hits upon the ingenious idea of opening a burger joint in his cousin's garage, using a special sauce to draw in the customers. Comedy, starring Clark Brandon, Randal Patrick, Tracy Griffith and Michael J Pollard."
+                    },
+                    "media": []
+                }, {
+                    "id": "1d404c40-aad4-30f9-a042-346fee1c4da9",
+                    "title": "The Fast Lady",
+                    "type": "movie",
+                    "tag": [{
+                        "id": "genre:comedy",
+                        "name": "Comedy"
+                    }],
+                    "summary": {
+                        "short": "Crime comedy, with Julie Christie and Stanley Baxter.",
+                        "medium": "A cyclist who gives up his bike to buy a luxury car to impress his dream woman ends up in a wild chase after bank robbers. Crime comedy, starring Julie Christie and Stanley Baker.",
+                        "long": "A cycling enthusiast on a modest civil servant's salary gives up his beloved bike to a buy a luxury car to impress a local magistrate's daughter. However, he first has to pass his driving test to stand any chance of winning her heart - and in the process ends up in a wild car-chase after a gang of robbers. Comedy, with Julie Christie, Stanley Baker, James Robertson Justice, Leslie Phillips and Dick Emery."
+                    },
+                    "media": []
+                }]
+              }
+      
+  /asset/{assetId}:
+    get:
+      description: Return the content of the selected asset.
+      summary: Asset Detail
+      tags:
+        - Asset
+      operationId: getAsset
+      security:
+        - apikey: []
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/AssetId'
+          in: path
+          required: true
+        - $ref: '#/parameters/Accept'
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+          examples:
+            application/json: |-
+              {
+                "id": "88934e86-c6c9-3403-b4c2-ab4c427e2325",
+                "title": "The Fast and the Furious: Tokyo Drift",
+                "type": "movie",
+                "productionYear": 2006,
+                "certification": {
+                    "bbfc": "12"
+                },
+                "tag": [{
+                    "id": "genre:adventure",
+                    "name": "Adventure"
+                }],
+                "summary": {
+                    "short": "Motor-racing adventure, starring Lucas Black.",
+                    "medium": "An American teenager living in Japan gets involved in illegal street racing, but ends up owing money to gangsters. Action adventure, starring Lucas Black and Nathalie Kelley.",
+                    "long": "An American teenager is sent to live with his father in Tokyo after a brush with the law, but soon becomes involved in illegal street racing. When he ends up owing money to gangsters after losing a race against a driver with Yakuza connections, he has to learn to master the Japanese style of driving to win and pay back his debts. Action adventure, starring Lucas Black, Nathalie Kelley and Bow Wow."
+                },
+                "media": [{
+                    "kind": "picture:movie",
+                    "copyright": "©Universal Studios",
+                    "expiryDate": "2017-06-15",
+                    "rendition": {
+                        "default": {
+                            "href": "http://tv.static.press.net/asset/webANXfastfurioustokyo.jpg"
+                        }
+                    }
+                }]
+              }
+              
+  /asset/{assetId}/contributor:
+    get:
+      description: Return a collection of Contributors for given Asset.
+      summary: Asset Contributor Collection
+      tags:
+        - Asset
+      operationId: listAssetContributors
+      security:
+        - apikey: []
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/AssetId'
+          in: path
+          required: true
+        - $ref: '#/parameters/Accept'
+        - $ref: '#/parameters/ContributorType'
+        - $ref: '#/parameters/Query'
+        - $ref: '#/parameters/Limit'
+        - $ref: '#/parameters/Offset'
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+          examples:
+            application/json: |-
+              {
+                  "limit": 5,
+                  "offset": 0,
+                  "hasNext": true,
+                  "hasPrevious": false,
+                  "items": [{
+                      "id": "454bb270-cd90-37d6-a16d-c17acc0e4f0f",
+                      "name": "Lucas Black",
+                      "role": "Sean Boswell",
+                      "type": "cast",
+                      "media": []
+                  }, {
+                      "id": "9f25fb1b-33e4-3055-96d9-c53a0e5f8cd7",
+                      "name": "Bow Wow",
+                      "role": "Twinkie",
+                      "type": "cast",
+                      "media": []
+                  }, {
+                      "id": "9fa29c46-1e4b-3a34-98f1-0a107b99ca96",
+                      "name": "Nathalie Kelley",
+                      "role": "Neela",
+                      "type": "cast",
+                      "media": []
+                  }, {
+                      "id": "caa8e8c2-2674-334c-a0d5-bf39f430f2f2",
+                      "name": "Brian Tee",
+                      "role": "DK",
+                      "type": "cast",
+                      "media": []
+                  }, {
+                      "id": "6b5ead80-6443-396f-b3d8-68702aea220c",
+                      "name": "Kang Sung",
+                      "role": "Han",
+                      "type": "cast",
+                      "media": []
+                  }]
+              }
+      
+  /feature:
+    get:
+      description: Return a collection of channels.
+      summary: Feature Collection
+      tags:
+        - Feature
+      operationId: listFeatures
+      security:
+        - apikey: []
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/Accept'
+        - $ref: '#/parameters/Tag'
+        - $ref: '#/parameters/Date'
+          name: start
+          description: >-
+            Limit the features to ones scheduled from the selected date provided. For example 2014-04-14.
+
+            The 'end' parameter is typically used in combination with the 'start' param to form a date range.
+        - $ref: '#/parameters/Date'
+          name: end            
+          description: >-
+            Limit the feature to ones scheduled to the selected date provided. For example: 2014-04-17.
+
+            The 'end' parameter is typically used in combination with the 'start' param to form a date range.
+        - $ref: '#/parameters/Limit'
+        - $ref: '#/parameters/Offset'
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+          examples:
+            application/json: |-
+              {
+                  "limit": 2,
+                  "offset": 0,
+                  "hasNext": true,
+                  "hasPrevious": false,
+                  "items": [{
+                      "id": "825b4d61-5c2f-3306-8477-9867a504564e",
+                      "dateTime": "2017-05-25",
+                      "tag": [{
+                          "id": "feature:soap-entertainment",
+                          "name": "Soap-Entertainment"
+                      }],
+                      "asset": {
+                          "id": "d58e720d-7d0b-3d28-81a2-e021dd84789c",
+                          "title": "Hollyoaks",
+                          "type": "episode",
+                          "number": 4654,
+                          "relatedAsset": {
+                              "series": {
+                                  "id": "ffdc7825-6f7f-37f0-8a12-3061a0c44f1a",
+                                  "title": "Hollyoaks"
+                              }
+                          },
+                          "tag": [{
+                              "id": "genre:soap",
+                              "name": "Soap"
+                          }, {
+                              "id": "genre:melodrama",
+                              "name": "Melodrama"
+                          }, {
+                              "id": "genre:folkloric",
+                              "name": "Folkloric"
+                          }],
+                          "summary": {
+                              "short": "Sally gets the wrong idea from Neeta and Tony.",
+                              "medium": "Neeta orders Hunter to leave and Sally thinks that Neeta has organised the candle lit dinner for her. Meanwhile, Harry is adamant to pursue something that Ste reveals.",
+                              "long": "Neeta orders Hunter to leave and Sally thinks that Neeta has organised the candle lit dinner for her. Meanwhile, Harry and Tony visit Ste, where he reveals that he think Ryan is the one that killed Amy."
+                          },
+                          "media": [{
+                              "kind": "picture:episode",
+                              "copyright": "LIMEPICTURES",
+                              "expiryDate": "2017-06-15",
+                              "rendition": {
+                                  "default": {
+                                      "href": "http://tv.static.press.net/asset/webANXholyoaksE4654.jpg"
+                                  }
+                              }
+                          }, {
+                              "kind": "picture:series",
+                              "copyright": "©LIMEPICTURES",
+                              "expiryDate": "2017-06-15",
+                              "rendition": {
+                                  "default": {
+                                      "href": "http://tv.static.press.net/asset/webANXhollyoaksser.jpg"
+                                  }
+                              }
+                          }]
+                      }
+                  }, {
+                      "id": "0f221ca7-e8a0-3390-9b4b-37193430dd55",
+                      "dateTime": "2017-05-25",
+                      "tag": [{
+                          "id": "feature:soap-entertainment",
+                          "name": "Soap-Entertainment"
+                      }],
+                      "asset": {
+                          "id": "7b4cf56c-2b86-3b58-80ea-98f64308a723",
+                          "title": "Neighbours",
+                          "type": "episode",
+                          "number": 7609,
+                          "relatedAsset": {
+                              "series": {
+                                  "id": "be496503-77db-31e3-a22c-9078806a37d4",
+                                  "title": "Neighbours"
+                              }
+                          },
+                          "tag": [{
+                              "id": "genre:soap",
+                              "name": "Soap"
+                          }, {
+                              "id": "genre:melodrama",
+                              "name": "Melodrama"
+                          }, {
+                              "id": "genre:folkloric",
+                              "name": "Folkloric"
+                          }],
+                          "summary": {
+                              "short": "Steph is caught red-handed trying to cover for Sonya.",
+                              "medium": "Steph is caught red-handed trying to cover for Sonya, while Brooke convinces Gary to win back Terese by making a grand gesture."
+                          },
+                          "media": [{
+                              "kind": "picture:series",
+                              "copyright": "channel 5",
+                              "expiryDate": "2017-06-15",
+                              "rendition": {
+                                  "default": {
+                                      "href": "http://tv.static.press.net/asset/webANXneighboursgen.jpg"
+                                  }
+                              }
+                          }, {
+                              "kind": "picture:series",
+                              "copyright": "PA Archive/PA Images",
+                              "expiryDate": "2017-06-15",
+                              "rendition": {
+                                  "default": {
+                                      "href": "http://tv.static.press.net/asset/webANXneighbourskarl.jpg"
+                                  }
+                              }
+                          }]
+                      }
+                  }]
+                }
+        
+  /feature/{featureId}:
+    get:
+      description: Return the content of the selected feature.
+      summary: Feature Detail
+      tags:
+        - Feature
+      operationId: getDetail
+      security:
+        - apikey: []
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/FeatureId'
+          in: path
+        - $ref: '#/parameters/Accept'
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+          examples:
+            application/json: |-
+              {
+                  "id": "825b4d61-5c2f-3306-8477-9867a504564e",
+                  "dateTime": "2017-05-25",
+                  "tag": [{
+                      "id": "feature:soap-entertainment",
+                      "name": "Soap-Entertainment"
+                  }],
+                  "asset": {
+                      "id": "d58e720d-7d0b-3d28-81a2-e021dd84789c",
+                      "title": "Hollyoaks",
+                      "type": "episode",
+                      "number": 4654,
+                      "relatedAsset": {
+                          "series": {
+                              "id": "ffdc7825-6f7f-37f0-8a12-3061a0c44f1a",
+                              "title": "Hollyoaks"
+                          }
+                      },
+                      "tag": [{
+                          "id": "genre:soap",
+                          "name": "Soap"
+                      }, {
+                          "id": "genre:melodrama",
+                          "name": "Melodrama"
+                      }, {
+                          "id": "genre:folkloric",
+                          "name": "Folkloric"
+                      }],
+                      "summary": {
+                          "short": "Sally gets the wrong idea from Neeta and Tony.",
+                          "medium": "Neeta orders Hunter to leave and Sally thinks that Neeta has organised the candle lit dinner for her. Meanwhile, Harry is adamant to pursue something that Ste reveals.",
+                          "long": "Neeta orders Hunter to leave and Sally thinks that Neeta has organised the candle lit dinner for her. Meanwhile, Harry and Tony visit Ste, where he reveals that he think Ryan is the one that killed Amy."
+                      },
+                      "media": [{
+                          "kind": "picture:episode",
+                          "copyright": "LIMEPICTURES",
+                          "expiryDate": "2017-06-15",
+                          "rendition": {
+                              "default": {
+                                  "href": "http://tv.static.press.net/asset/webANXholyoaksE4654.jpg"
+                              }
+                          }
+                      }, {
+                          "kind": "picture:series",
+                          "copyright": "©LIMEPICTURES",
+                          "expiryDate": "2017-06-15",
+                          "rendition": {
+                              "default": {
+                                  "href": "http://tv.static.press.net/asset/webANXhollyoaksser.jpg"
+                              }
+                          }
+                      }]
+                  }
+              }
+
+  /contributor:
+    get:
+      description: Return a collection of contributors.
+      summary: Contributor Collection
+      tags:
+        - Contributor
+      operationId: listContributors
+      security:
+        - apikey: []
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/Accept'
+        - $ref: '#/parameters/Query'
+          description: 'Limit the contributor collection to items containing the provided string. For example: Jon'
+        - $ref: '#/parameters/Limit'
+        - $ref: '#/parameters/Offset'
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+          examples:
+            application/json: |-
+              {
+                  "limit": 5,
+                  "offset": 0,
+                  "hasNext": true,
+                  "hasPrevious": false,
+                  "items": [{
+                      "id": "e741a497-0b1d-39b5-bad3-9cbc4be4e82b",
+                      "name": "Adam Robinson",
+                      "media": []
+                  }, {
+                      "id": "7b59e128-ceb7-3706-b76e-d2ef7c92b44f",
+                      "name": "Alan Robinson",
+                      "media": []
+                  }, {
+                      "id": "24601e41-f569-38ef-b4f7-070b2fc7ec01",
+                      "name": "Alexandra Robinson",
+                      "media": []
+                  }, {
+                      "id": "0dd89164-e79e-3734-9fc8-9cbbed3f88ff",
+                      "name": "Alexia Robinson",
+                      "media": []
+                  }, {
+                      "id": "22ea8045-250b-3293-a5f9-a197f51abfdd",
+                      "name": "Alistair Robins",
+                      "media": []
+                  }]
+              }
+
+  /contributor/{contributorId}:
+    get:
+      description: Return the content of the selected feature.
+      summary: Contributor Detail
+      tags:
+        - Contributor
+      operationId: getContributor
+      security:
+        - apikey: []
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/ContributorId'
+          in: path
+          required: true
+        - $ref: '#/parameters/Accept'
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+          examples:
+            application/json: |-
+              {
+                  "id": "5fd125f5-5d59-329f-b59e-a4a18813b8c5",
+                  "name": "Vin Diesel",
+                  "firstName": "Vin",
+                  "lastName": "Diesel",
+                  "gender": "male",
+                  "birthDate": "1967-07-18",
+                  "birthPlace": "New York",
+                  "earlyLife": "Born Mark Sinclair Vincent on July 18, 1967, in New York. He has two sisters and a twin brother, Paul, who's a film editor. He never knew his biological father, and was raised in an artists' housing project in Greenwich Village by his astrologer mother and stepfather, a drama teacher. He began acting at the age of seven, after being persuaded by a woman to stop vandalising a theatre with friends and attend it instead. After high school, he became a bouncer and gained more theatre acting experience. He dropped out of university to go to Hollywood.",
+                  "career": "Diesel found getting acting jobs difficult until his mother gave him a book about making low-budget films. That led him to write, direct and star in short film Multi-Facial in 1994, which was well-received at the Cannes Film Festival. His first feature film, Strays, wasn't as well appraised, but Steven Spielberg was impressed enough to cast him in Saving Private Ryan. Diesel went on to voice The Iron Giant before tackling his first lead role in 2000's modest sci-fi hit Pitch Black. That made casting directors take notice, and he has since appeared in such blockbusters as The Fast and the Furious and xXx, as well as their sequels. Other films include The Pacifier, Find Me Guilty and Guardians of the Galaxy.",
+                  "quote": "\"I've worked out for years. For a long time it was my only sense of gratification.\"",
+                  "knownFor": "Being an action hero.",
+                  "trivia": "Diesel has a daughter, Hania, with model Paloma Jimenez.",
+                  "media": [{
+                      "kind": "picture:profile",
+                      "copyright": "PA Wire/Press Association Images",
+                      "rendition": {
+                          "default": {
+                              "href": "http://tv.static.press.net/profile/pp21972.jpg"
+                          }
+                      }
+                  }]
+              }
+
+  /tag:
+    get:
+      description: Return a collection of Tags.
+      summary: Tag Collection
+      tags:
+        - Tag
+      operationId: listTags
+      security:
+        - apikey: []
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/Accept'
+        - $ref: '#/parameters/Query'
+          description: 'Limit the tag collection to items containing the provided string. For example: horro'
+        - $ref: '#/parameters/Limit'
+        - $ref: '#/parameters/Offset'
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+          examples:
+            application/json: |-
+              {
+                  "limit": 2,
+                  "offset": 0,
+                  "hasNext": false,
+                  "hasPrevious": false,
+                  "items": [{
+                      "id": "genre:horror",
+                      "name": "Horror"
+                  }, {
+                      "id": "genre:horse-racing",
+                      "name": "Horse racing"
+                  }]
+              }
+
+parameters:
+  Accept:
+    name: Accept
+    in: header
+    required: false
+    type: string
+    enum:
+      - application/json
+    description: The response format.
+    default: application/json
+  Query:  
+    name: query
+    in: query
+    required: false
+    type: string
+    description: Search string to query the objects and return matching results.
+  Limit:
+    name: limit
+    in: query
+    required: false
+    type: integer
+    format: int32
+    description: >-
+      Limit the the number of items to be returned per page. For example: 5.
+
+      The 'limit' parameter is typically used with the 'offset' parameter to facilitate pagination.
+  Offset: 
+    name: offset
+    in: query
+    required: false
+    type: integer
+    format: int32
+    description: >-
+      The page offset of the first item to be returned. For example: 2.
+
+      The 'offset' parameter is typically used with the 'limit' parameter to facilitate pagination.
+  PlatformId:    
+    name: platformId
+    in: query
+    required: true
+    type: string
+    description: The identifier for the selected platform.
+  RegionId:
+    name: regionId
+    in: query
+    required: true
+    type: string
+    description: The platform region ID for the channel selection.
+  ChannelId:  
+    name: channelId
+    in: query
+    required: true
+    type: string
+    description: The identifier for the selected channel.
+  Date:
+    name: start
+    in: query
+    required: false
+    default: 2015-05-05
+    type: string
+    description: "Example Date"  
+  AssetId:  
+    name: assetId
+    in: query
+    required: false
+    type: string
+    description: A asset ID filter for the schedule collection. This can be a reference to any type of asset i.e. movie, season, series or episode.  
+  ContributorId:
+    name: contributorId
+    in: query
+    required: false
+    type: string
+    description: Filter the schedule items by contributor ID
+  Type:
+    name: type
+    in: query
+    required: false
+    default: movie
+    type: string
+    description: Type filter for the assets.i.e episode, movie, season or series
+  Tag:
+    name: tag
+    in: query
+    required: false
+    default: genre:comedy
+    type: string
+    description: Tag filter for the assets  
+  ContributorType:
+    name: type
+    in: query
+    required: false
+    type: string
+    description: Type filter for the assets. i.e. cast, director or producer
+  FeatureId:  
+    name: featureId
+    in: query
+    required: true
+    type: string
+    description: The identifier for the selected feature.
