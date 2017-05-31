@@ -2,7 +2,7 @@ swagger: '2.0'
 
 info:
   version: '1.0'
-  title: Press Association TV API
+  title: TV API
   description: Welcome to the API Reference Docs page for the Press Association TV API.
 host: tv.api.press.net
 basePath: /v1
