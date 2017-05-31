@@ -288,8 +288,14 @@ paths:
         - application/json
       parameters:
         - $ref: '#/parameters/ChannelId'
+          required: false
+          description: The identifier for the selected channel, either a channel or a combination of a platfrom and region must be passed to the schedule collection endpoint.
         - $ref: '#/parameters/PlatformId'
+          required: false
+          description: The identifier for the selected platfrom, either a channel or a combination of a platfrom and region must be passed to the schedule collection endpoint.
         - $ref: '#/parameters/RegionId'
+          required: false
+          description: The identifier for the selected region, either a channel or a combination of a platfrom and region must be passed to the schedule collection endpoint.
         - $ref: '#/parameters/Date'
           name: start
           description: "Limit the schedule to ones scheduled from the selected date provided. For example 2014-04-14.\n\nThe 'end' parameter is typically used in combination with the 'end' param to form a date range.\n\n\n Formats Supported:\n\n\n - yyyy/MM/dd \n\n\n - yyyy/MM/ddThh:mm \n\n\n - now.plus.{nHours?} \n\n\n - now.minus.{nHours?} \n\n\n - tomorrow"
