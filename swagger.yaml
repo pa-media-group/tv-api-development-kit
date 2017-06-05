@@ -609,7 +609,7 @@ paths:
       
   /feature:
     get:
-      description: Return a collection of channels.
+      description: Return a collection of features.
       summary: Feature Collection
       tags:
         - Feature
@@ -886,7 +886,7 @@ paths:
 
   /contributor/{contributorId}:
     get:
-      description: Return the content of the selected feature.
+      description: Return the content of the selected contributor.
       summary: Contributor Detail
       tags:
         - Contributor
