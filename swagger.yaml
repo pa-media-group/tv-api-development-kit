@@ -1469,6 +1469,35 @@ paths:
         - Catalogue (Coming Soon)
       operationId: getCatalogue
       security:
+        - apikey: [ ]
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/CatalogueId'
+          in: path
+          required: true
+        - $ref: '#/parameters/Accept'
+      responses:
+        200:
+          description: ''
+          schema:
+            type: object
+          examples:
+            application/json: |-
+              {
+                "id": "f55530eb-d12f-40aa-8b20-e2fa4361cc24",
+                "name": "Amazon Prime",
+                "namespace": "catalogue:amazon-prime"
+              }
+
+  /catalogue/{catalogueId}/asset:
+    get:
+      description: Return the content of the selected catalogue.
+      summary: Catalogue Content
+      tags:
+        - Catalogue (Coming Soon)
+      operationId: getCatalogueAsset
+      security:
         - apikey: []
       produces:
         - application/json
